@@ -10,6 +10,7 @@ OD=arm-none-eabi-objdump
 
 BIN=$(CP) -O ihex 
 
+# Change HSE_VALUE according to your external clock.
 DEFS = -DUSE_STDPERIPH_DRIVER -DSTM32F4XX -DHSE_VALUE=8000000
 STARTUP = Libs/CMSIS/startup_stm32f40xx.s
 
@@ -69,9 +70,14 @@ all: $(TARGET)
 $(TARGET): $(EXECUTABLE)
 	$(CP) -O ihex $^ $@
 
-$(EXECUTABLE): $(SRC) $(STARTUP)
-	$(CC) $(CFLAGS) $^ -lm -lc -lnosys -o $@
+$(EXECUTABLE): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -lm -lc -lnosys -o $@
 
 clean:
-	rm -f Startup.lst  $(TARGET)  $(TARGET).lst $(OBJ) $(AUTOGEN)  $(TARGET).out  $(TARGET).hex  $(TARGET).map \
-	 $(TARGET).dmp  $(TARGET).elf
+	rm -f Startup.lst  $(TARGET)  $(TARGET).lst $(OBJ) $(AUTOGEN)  $(TARGET) $(EXECUTABLE)
+
+Startup.o: $(STARTUP)
+	$(CC) $(CFLAGS) -c $^ -lm -lc -lnosys -o $*.o
+	 
+%.o: %.c
+	$(CC) $(CFLAGS) -c $^ -lm -lc -lnosys -o $*.o
