@@ -18,7 +18,8 @@ MCU = cortex-m4
 MCFLAGS = -mcpu=$(MCU) -mthumb -mlittle-endian -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb-interwork -std=c99
 STM32_INCLUDES = \
 	-ILibs/CMSIS/Include/ \
-	-ILibs/STM32F4xx_StdPeriph_Driver/inc/
+	-ILibs/STM32F4xx_StdPeriph_Driver/inc/ \
+	-ILibs/DiscoveryF4/inc/
 
 OPTIMIZE       = -Os
 
@@ -59,7 +60,9 @@ SRC = main.c \
 	Libs/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_syscfg.c \
 	Libs/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c \
 	Libs/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c \
-	Libs/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c 
+	Libs/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c \
+	Libs/DiscoveryF4/src/discoveryf4_led.c \
+	Libs/DiscoveryF4/src/discoveryf4_button.c
 
 OBJDIR = .
 OBJ = $(SRC:%.c=$(OBJDIR)/%.o) 
