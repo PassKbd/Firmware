@@ -85,6 +85,18 @@ Buttonpad_Event Buttonpad_nextEvent()
 	return events[currentReadEvent];
 }
 
+Buttonpad_Event Buttonpad_waitEvent()
+{
+	while (1) {
+		Buttonpad_Event event = Buttonpad_nextEvent();
+		if (event.type != Buttonpad_Event_None) {
+			Buttonpad_clearEvent();
+			return event;
+		}
+	}
+}
+
+
 void Buttonpad_clearEvent()
 {
 	if (events[currentReadEvent].type != Buttonpad_Event_None) {

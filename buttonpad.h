@@ -65,6 +65,7 @@ typedef struct {
 
 void Buttonpad_init();
 Buttonpad_Event Buttonpad_nextEvent();
+Buttonpad_Event Buttonpad_waitEvent();
 void Buttonpad_clearEvent();
 
 #endif
