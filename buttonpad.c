@@ -100,6 +100,7 @@ Buttonpad_Event Buttonpad_waitEvent()
 void Buttonpad_clearEvent()
 {
 	if (events[currentReadEvent].type != Buttonpad_Event_None) {
+		events[currentReadEvent].type = Buttonpad_Event_None;
 		currentReadEvent = (currentReadEvent + 1) & (BUTTONPAD_EVENTS - 1);
 	}
 }
@@ -125,19 +126,20 @@ void TIM2_IRQHandler(void)
 		else {
 			++keyReleaseCounter[key_index];
 		}
-		if (keyReleaseCounter[key_index] > BUTTONPAD_SHORT_THRESHOLD) {
-			events[currentWriteEvent].key = key_index;
+		if (keyReleaseCounter[key_index] > BUTTONPAD_SHORT_THRESHOLD &&
+			events[currentWriteEvent].type == Buttonpad_Event_None) 
+		{
 			if (keyPressedCounter[key_index] >= BUTTONPAD_SHORT_THRESHOLD) {
+				events[currentWriteEvent].key = key_index;
 				events[currentWriteEvent].type = Buttonpad_Event_ShortPress;
 				++currentWriteEvent;
 			} 
 			else if (keyPressedCounter[key_index] >= BUTTONPAD_LONG_THRESHOLD) {
+				events[currentWriteEvent].key = key_index;
 				events[currentWriteEvent].type = Buttonpad_Event_LongPress;
 				++currentWriteEvent;
 			}
-			else {
-				keyPressedCounter[key_index] = 0;
-			}
+			keyPressedCounter[key_index] = 0;
 			currentWriteEvent &= (BUTTONPAD_EVENTS - 1);
 		}
 	}

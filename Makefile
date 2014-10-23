@@ -28,6 +28,8 @@ AFLAGS	= $(MCFLAGS)
 #-mapcs-float use float regs. small increase in code size
 
 SRC = main.c \
+    buttonpad.c \
+	hd44780.c \
 	stm32f4xx_it.c \
 	Libs/CMSIS/system_stm32f4xx.c \
 	Libs/STM32F4xx_StdPeriph_Driver/src/misc.c \
