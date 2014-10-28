@@ -10,8 +10,10 @@ OD=arm-none-eabi-objdump
 
 BIN=$(CP) -O ihex 
 
+F_CPU = 168000000UL
+
 # Change HSE_VALUE according to your external clock.
-DEFS = -DUSE_STDPERIPH_DRIVER -DSTM32F4XX -DHSE_VALUE=8000000
+DEFS = -DUSE_STDPERIPH_DRIVER -DSTM32F4XX -DHSE_VALUE=8000000 -DF_CPU=$(F_CPU)
 STARTUP = Libs/CMSIS/startup_stm32f40xx.s
 
 MCU = cortex-m4
@@ -21,15 +23,16 @@ STM32_INCLUDES = \
 	-ILibs/STM32F4xx_StdPeriph_Driver/inc/ \
 	-ILibs/DiscoveryF4/inc/
 
-OPTIMIZE       = -Os
+OPTIMIZE = -Os
 
 CFLAGS	= $(MCFLAGS)  $(OPTIMIZE)  $(DEFS) -I. -I./ $(STM32_INCLUDES)  -Wl,-T,Libs/stm32_flash.ld
 AFLAGS	= $(MCFLAGS) 
 #-mapcs-float use float regs. small increase in code size
 
 SRC = main.c \
-    buttonpad.c \
+	buttonpad.c \
 	hd44780.c \
+	delay.c \
 	stm32f4xx_it.c \
 	Libs/CMSIS/system_stm32f4xx.c \
 	Libs/STM32F4xx_StdPeriph_Driver/src/misc.c \

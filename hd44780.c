@@ -51,14 +51,14 @@ void lcd_outbyte(uint8_t out)
 		out >>= 1;
 	}
 	
-	volatile uint32_t delay = 8400000;
+	/*volatile uint32_t delay = 8400000;
 	while (delay--);
 	
 	// EN to high
 	ctrl_gpio[0]->BSRRL = ctrl_pins[0];	
 
 	volatile uint32_t delay = 8400000;
-	while (delay--);
+	while (delay--);*/
 
 	// EN to low
 	ctrl_gpio[0]->BSRRH = ctrl_pins[0];	
@@ -138,8 +138,7 @@ void lcd_data(uint8_t data) {
 	while (delay--);
 }
 
-void lcd_init()
-{
+void lcd_init() {
 	// Enable GPIO peripherals
 	// Change accordingly to header
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
@@ -161,65 +160,18 @@ void lcd_init()
 	
 	// Initialize display!
 	lcd_command( LCD_SET_FUNCTION |
-                 LCD_FUNCTION_8BIT |
-                 LCD_FUNCTION_2LINE |
-                 LCD_FUNCTION_5X7 );
+		  LCD_FUNCTION_8BIT |
+		  LCD_FUNCTION_2LINE |
+		  LCD_FUNCTION_5X7 );
  
-    // Display ein / Cursor aus / Blinken aus
-    lcd_command( LCD_SET_DISPLAY |
-                 LCD_DISPLAY_ON |
-                 LCD_CURSOR_ON |
-                 LCD_BLINKING_ON); 
+	// Display ein / Cursor aus / Blinken aus
+	lcd_command( LCD_SET_DISPLAY |
+		  LCD_DISPLAY_ON |
+		  LCD_CURSOR_ON |
+		  LCD_BLINKING_ON); 
  
-    // Cursor inkrement / kein Scrollen
-    lcd_command( LCD_SET_ENTRY |
-                 LCD_ENTRY_INCREASE |
-                 LCD_ENTRY_NOSHIFT );
+	// Cursor inkrement / kein Scrollen
+	lcd_command( LCD_SET_ENTRY |
+		  LCD_ENTRY_INCREASE |
+		  LCD_ENTRY_NOSHIFT );
 }
-
-/*
-void TIM2_IRQHandler(void)
-{
-	static int row = 3;
-	
-	// Change to next row
-	row = (row + 1) & 3;
-	
-	// Activate row
-	row_gpios[row]->BSRRH = row_pins[row];
-	
-	// Check each column in active row
-	for (int col = 0; col < 4; ++col) {
-		unsigned char key_index = (row << 2) + col;
-		if (GPIO_ReadInputDataBit(column_gpios[col], column_pins[col]) == 0) {
-			++keyPressedCounter[key_index];
-			keyReleaseCounter[key_index] = 0;
-		}
-		else {
-			++keyReleaseCounter[key_index];
-		}
-		if (keyReleaseCounter[key_index] > BUTTONPAD_SHORT_THRESHOLD &&
-			events[currentWriteEvent].type == Buttonpad_Event_None) 
-		{
-			if (keyPressedCounter[key_index] >= BUTTONPAD_SHORT_THRESHOLD) {
-				events[currentWriteEvent].key = key_index;
-				events[currentWriteEvent].type = Buttonpad_Event_ShortPress;
-				++currentWriteEvent;
-			} 
-			else if (keyPressedCounter[key_index] >= BUTTONPAD_LONG_THRESHOLD) {
-				events[currentWriteEvent].key = key_index;
-				events[currentWriteEvent].type = Buttonpad_Event_LongPress;
-				++currentWriteEvent;
-			}
-			keyPressedCounter[key_index] = 0;
-			currentWriteEvent &= (BUTTONPAD_EVENTS - 1);
-		}
-	}
-	
-	// Disable row
-	row_gpios[row]->BSRRL = row_pins[row];
-
-	// Clear interrupt
-	TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-}
-*/
