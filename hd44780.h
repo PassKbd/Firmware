@@ -2,16 +2,30 @@
 #define __HD44780_H__
 
 #include <stm32f4xx.h>
+#include <stm32f4xx_gpio.h>
+#include <discoveryf4_led.h>
+#include "delay.h"
+
+static inline void lcd_EN_low();
+static inline void lcd_EN_high();
+static inline void lcd_EN_toggle();
+static inline void lcd_RW_low();
+static inline void lcd_RW_high();
 
 void lcd_init();
 void lcd_command(uint8_t command);
 void lcd_data(uint8_t data);
+
+void data_as_output();
+void data_as_input();
 
 void lcd_selectData();
 void lcd_selectInstruction();
 
 void lcd_outbyte(uint8_t out);
 uint8_t lcd_inbyte();
+
+uint8_t lcd_isBusy();
 
 ////////////////////////////////////////////////////////////////////////////////
 // LCD Befehle und Argumente.
@@ -30,6 +44,9 @@ uint8_t lcd_inbyte();
 #define LCD_ENTRY_INCREASE      0x02
 #define LCD_ENTRY_NOSHIFT       0x00
 #define LCD_ENTRY_SHIFT         0x01
+
+// Init Display --------------- 0b00110000
+#define LCD_INIT_CMD            0x30
  
 // Set Display ---------------- 0b00001xxx
 #define LCD_SET_DISPLAY         0x08

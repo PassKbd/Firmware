@@ -1,7 +1,6 @@
 #include "main.h"
 
-int main(void)
-{
+int main(void) {
 	// Init DiscoveryF4 Buttons and LEDs
 	DiscoveryF4_LED_init(DiscoveryF4_LED_All);
 	DiscoveryF4_Button_init(DiscoveryF4_Button_GPIO);
@@ -26,5 +25,3 @@ int main(void)
 		}
 	}
 }
-
-// Toggle Red, Green and Orange LEDs on Timer (every 5s)
